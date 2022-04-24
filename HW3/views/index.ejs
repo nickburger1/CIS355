@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/meta') %>
+
+<body class="d-flex flex-column min-vh-100" style="text-align: center;">
+    <h1 style="text-align: center;">Welcome to the Trip Planner App</h1> <br>
+    
+    <!-- form to input desired trip-->
+    <form action="/trip" method="GET" style="display: inline;">
+        <label for="txtInput">Where do you want to go?</label> <br>
+        <input type="text" name="trip" id="txtInput" style="width: 600px;" placeholder="ie. New York NY,Boston MA"> <br>
+        <input type="submit" value="Make My Trip" >
+        <!-- if trip obj has been passed, will display trip summary, if trip obj has not yet been passed trip summary will not be visible until user inputs locations and submits -->
+    <%if(locals.trip !=null){%>
+
+        <!-- coverts meters to miles and rounds to two decimals -->
+        <% let miles = Math.round(((locals.trip.tripObj.distance)/1609)*100)/100 %> 
+        <!-- converts seconds to hours and rounds to two decimals -->
+        <% let hours = Math.round((((locals.trip.tripObj.duration)/60)/60)*100)/100 %>
+        <!-- variable for name of final dest -->
+        <% let lastDest = '' %>
+        <!-- loop through legs array -->
+        <% for(let i=0; i < locals.trip.tripObj.legs.length; i++){%>
+            <!-- if current leg = final leg -->
+            <% if(i===locals.trip.tripObj.legs.length-1){%>
+                <!-- assign name of that stop to lastDest  -->
+                <%lastDest = locals.trip.tripObj.legs[i].stop.name%>
+                <%}%>
+        <%}%>
+
+        <h2 style="text-align: left;">Your Trip Summary</h2> 
+        <!-- display total distance in miles -->
+        <p style="text-align: left;">Total Distance: <%=miles%> miles%></p> 
+        <!-- display total time in hours -->
+        <p style="text-align: left;">Total Time: <%=hours%> hours%></p> 
+        
+        <h4 style="text-align: left;">Summary of Stops</h4>
+        <!-- create a list wihtout bullet point so display each leg of the trip -->
+        <ul style="text-align: left; list-style-type:none;">
+            <!-- loop through legs array -->
+            <% for(let i=0; i< locals.trip.tripObj.legs.length; i++){ %>
+                <!-- display name of starting location for that leg -->
+              <li><%=i+1%>. Start: <%= locals.trip.tripObj.legs[i].start.name %></li>
+              <!-- display name of stoping location of that leg -->
+              <li>          Stop: <%= locals.trip.tripObj.legs[i].stop.name %></li>
+              <!-- display distance between starting and stoping location for that leg -->
+              <li>          Distance: <%= Math.round(((locals.trip.tripObj.legs[i].distance)/1609)*100)/100 %> miles</li>
+              <!-- display time it will take to get from starting location and stopping location of that leg -->
+              <li>          Time: <%= Math.round((((locals.trip.tripObj.legs[i].duration)/60)/60)*100)/100 %> hours</li> <br>
+                <%}%>
+            </ul>
+
+            <!-- display weather at the final destination -->
+        <h5 id="txtResultEnd" style="text-align: left; font-weight: bolder;">It is currenly <%=locals.trip.tripObj.weather.temp%> degrees in <%=lastDest%>. It feels like <%=locals.trip.tripObj.weather.real%> degrees </h5>
+        <%}%>
+    </form>
+
+    
+
+</body>
+</html>
