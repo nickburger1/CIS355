@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/meta') %>
+<body class="d-flex flex-column min-vh-100">
+    <%- include('partials/header') %> 
+    <div style="max-width: 700px; float: left;"> <!--form for register request-->
+        <form action="/register" method="post">
+            <h1>New User? Create an Account</h1>
+            <div class="mb-3">
+                <label class="form-label">Username:</label>
+                <input type="text" class="form-control" name="username"> <!--text box for username-->
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Name:</label>
+                <input type="text" class="form-control" name="name"> <!--text box for name-->
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Balance:</label>
+                <input type="number" class="form-control" name="balance"> <!--text box for balance-->
+              </div>
+              
+              <button type="submit" class="btn btn-primary">Register</button><!--button to submit-->
+        </form>
+    </div>
+    <div style="max-width: 700px;"> <!--for for login request-->
+        <form action="/login" method="post">
+            <h1>Log into an Existing Account</h1>
+              <div class="mb-3">
+                <label class="form-label">Username:</label>
+                <input type="text" class="form-control" name="username"><!--text box for username-->
+              </div>
+              
+              <button type="submit" class="btn btn-primary">Log in</button> <!--button to submit-->
+        </form>
+    </div>
+    
+    <%- include('partials/footer') %>
+</body>
+</html>

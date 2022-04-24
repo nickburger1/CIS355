@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!--add all items into an array-->
+    <%- include('partials/meta') %>
+    <%let itemArr = []%>
+    <%for(let current of locals.users) {%>
+        <%  for(let item of current.items){%>
+            <%  if(current.username !== locals.user.username){%>
+                <%   itemArr.push(item)%>
+                <% }%>
+                <% }%>
+                <% }%>
+ <body class="d-flex flex-column min-vh-100"> 
+    <%- include('partials/header') %> 
+    <!-- make a form for the dynamic header -->
+    <form action="/logout" method="post">
+    <h1 id="userHeader" style="text-align: center; background-color: burlywood;">Hello <%= locals.user.name %></h1>
+    <button type="submit" class="btn btn-primary" style="background-color: red; max-width: 100px; align-self: center;">Log Out</button>
+</form>
+    <!-- table for users info -->
+    <h2>At a Glance</h2>
+    <table class="table">
+        <thead>
+          <tr style="background-color: rgb(114, 114, 248);">
+            <th scope="col">Name</th>
+            <th scope="col">Username</th>
+            <th scope="col">Current Balance</th>
+            <th scope="col">Items Owned</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background-color: rgb(165, 165, 252);">
+            <th scope="row"><%= locals.user.name %></th> <!--users name -->
+            <td><%= locals.user.username %></td> <!--user username -->
+            <td><%= locals.user.balance %></td> <!--user balance  -->
+            <td><%= locals.user.items.length %></td> <!--users amount of items -->
+          </tr>
+        </tbody>
+      </table> <br>
+      <!-- card group to store users items -->
+      <h2>Your Items</h2>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+               <h5 class="card-title"><%= locals.user.items.name%></h5> <!--item name -->
+              <p class="card-text">Item ID: <%= locals.user.items.id %></p> <!--item id -->
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Price: $<%= locals.user.items.price %></small> <!--item price -->
+            </div>
+          </div>
+        </div>
+      </div> <br>
+
+      <!-- card group for all items -->
+      <form action="/buy" method="post">
+      <h2>Buy Items</h2> 
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+                <%for(let i =0; i< itemArr.length; i++){%> <!--loop through item array-->
+              <h5 class="card-title"><%=itemArr[i].name%></h5> <!--item name-->
+              <p class="card-text">Item ID: <%=itemArr[i].id%> </p> <!--item id-->
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Price: $<%=itemArr[i].price%></small> <!--item price-->
+              <!--why does this display item info but locals.user.items.* not???-->
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }%>
+      <br>
+      <button type="submit" class="btn btn-primary">Buy Item</button> <!--buy item button-->
+    </form>
+    <%- include('partials/footer') %>
+</body>
+</html>
